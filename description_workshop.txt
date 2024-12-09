@@ -1,5 +1,27 @@
-[img]https://raw.githubusercontent.com/shnakamura/InventoryTweaks/main/.github/assets/header-title.png[/img]
-[img]https://raw.githubusercontent.com/shnakamura/InventoryTweaks/main/.github/assets/header-features.png[/img]
-[img]https://raw.githubusercontent.com/shnakamura/InventoryTweaks/main/.github/assets/feature-quick-shift.gif[/img]
-[img]https://raw.githubusercontent.com/shnakamura/InventoryTweaks/main/.github/assets/feature-quick-control.gif[/img]
-[url=https://ko-fi.com/nakamurash][img]https://raw.githubusercontent.com/shnakamura/InventoryTweaks/main/.github/assets/header-kofi.png[/img][/url]
+[h1]1. About[/h1]
+[b]Inventory Tweaks[/b] is a client-side mod which adds several configurable tweaks to the inventory, including new visual animations, refined mouse interactions, etc.
+
+[h1]2. Features[/h1]
+[list]
+[*] [b]Quick-shift[/b]: Hold Shift to interact with slots continuously.
+
+[*] [b]Quick-control[/b]: Hold Control to interact with slots continuously.
+
+[*] [b]Stack Refill[/b]: Replaces used items with new stacks from inventory.
+
+[*] [b]Mouse Refill[/b]: Refills the item in-hand with inventory stacks.
+
+[*] [b]Distribution[/b]: Hold right-click and hover to deposit items.
+
+[*] [b]Stack Amount[/b]: Set how many items to take from a stack.
+[/list]
+
+[h1]3. Compatibility[/h1]
+[list]
+[*] [b]Magic Storage[/b]
+
+[*] [b]Dragon Lens[/b]
+[/list]
+
+[h1]4. Links[/h1]
+[url=https://ko-fi.com/nakamurash][b]Ko-Fi (Donate)[/b][/url] | [url=https://github.com/nakas-warehouse/InventoryTweaks][b]GitHub (Source Code)[/b][/url] | [url=https://discord.gg/K472vMzWVg][b]Discord (Server)[/b][/url]
