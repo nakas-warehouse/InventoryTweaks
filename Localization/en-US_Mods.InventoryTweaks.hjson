@@ -20,7 +20,22 @@ Configs: {
 
 		EnableHoverEffects: {
 			Label: Enable Hover Effects
-			Tooltip: Toggles special effects applied to items when hovered over.
+			Tooltip: Toggles visual effects applied to items when hovered over.
+		}
+
+		EnableMouseEffects: {
+			Label: Enable Mouse Effects
+			Tooltip: Toggles visual effects applied to items selected in the cursor slot.
+		}
+
+		EnableSelectedEffects: {
+			Label: Enable Selected Effects
+			Tooltip: Toggles visual effects applied to items selected in the hotbar.
+		}
+
+		EnableDistribution: {
+			Label: Enable Distribution
+			Tooltip: Toggles automatic item distribution when managing inventory.
 		}
 
 		EnableMovementEffects: {
@@ -35,73 +50,58 @@ Configs: {
 
 		EnableQuickControl: {
 			Label: Enable Quick Control
-			Tooltip: Toggles quick-access inventory controls for more efficient management.
+			Tooltip: Toggles quick-access controls for more efficient inventory management.
 		}
 
 		EnableStackRefill: {
 			Label: Enable Stack Refill
-			Tooltip: Toggles automatic refills item stacks in your hotbar from your inventory when depleted.
+			Tooltip: Toggles automatic item refills in your hotbar from your inventory when depleted.
 		}
 
 		EnableInventorySounds: {
 			Label: Enable Inventory Sounds
-			Tooltip: Toggles sound effects when interacting with inventory items.
+			Tooltip: Toggles sound effects for inventory interactions.
 		}
 
 		EnableMouseRefill: {
 			Label: Enable Mouse Refill
-			Tooltip: Toggles manual refilling of items in the cursor slot from inventory stacks.
+			Tooltip: Toggles automatic item refills in the cursor slot from inventory stacks.
 		}
 
 		StackType: {
 			Label: Stack Type
 			Tooltip:
 				'''
-				Determines the quantity of items taken from a stack when splitting:
-				- Default: Takes 1 item from the stack.
-				- Half: Takes half of the stack's items.
-				- Full: Takes all items from the stack.
+				Determine the quantity of items taken from a stack when splitting:
+				- Default: Take 1 item from the stack.
+				- Half: Take half of the stack's items.
+				- Full: Take all items from the stack.
 				'''
 		}
 
-		HoverType: {
-			Label: Hover Type
+		SortType: {
+			Label: Sort Type
 			Tooltip:
 				'''
-				Determines when an item's hover effects are active:
-				- None: No items have hover effects.
-				- Mouse: Only the mouse item has hover effects.
-				- Hover: Only hovered items have hover effects.
-				- Held: Only held items have hover effects.
-				- All: All items have hover effects.
+				Determine which item stacks are prioritized during stack refills:
+				- Ascending: Prioritize items with smaller stacks.
+				- Descending: Prioritize items with larger stacks.
 				'''
-		}
-
-		EnableMouseEffects: {
-			Label: Enable Mouse Effects
-			Tooltip: ""
-		}
-
-		EnableSelectedEffects: {
-			Label: Enable Selected Effects
-			Tooltip: ""
 		}
 	}
 
 	StackType: {
-		Tooltip: Determines how stack splitting behaves.
+		Tooltip: Determine how stack splitting behaves.
 		Default.Label: Default
 		Half.Label: Half
 		Full.Label: Full
+		Single.Label: Single
 	}
 
-	HoverType: {
-		Tooltip: Determines how item hover effects are applied.
-		None.Label: None
-		Mouse.Label: Mouse
-		Hover.Label: Hover
-		Held.Label: Held
-		All.Label: All
+	SortType: {
+		Tooltip: Determine how stacks are prioritized during refills.
+		Ascending.Label: Ascending
+		Descending.Label: Descending
 	}
 }
 

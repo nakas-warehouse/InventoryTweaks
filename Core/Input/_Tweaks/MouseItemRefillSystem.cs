@@ -1,4 +1,5 @@
 ﻿using InventoryTweaks.Core.Configuration;
+using InventoryTweaks.Core.Enums;
 using InventoryTweaks.Core.Input;
 using InventoryTweaks.Utilities;
 using Terraria.Audio;
@@ -21,6 +22,7 @@ public sealed class MouseItemRefillSystem : ModSystem
         RefillMouseItem();
     }
 
+    // TODO: Take open chests into account for refills.
     private static void RefillMouseItem()
     {
         var config = ClientConfiguration.Instance;
@@ -37,18 +39,25 @@ public sealed class MouseItemRefillSystem : ModSystem
             indices[i] = i;
         }
 
-        Array.Sort(indices, static (left, right) =>
+        Array.Sort(indices, (left, right) =>
         {
             var leftItem = Main.LocalPlayer.inventory[left];
             var rightItem = Main.LocalPlayer.inventory[right];
 
-            return leftItem.stack.CompareTo(rightItem.stack);
+            return config.SortType switch
+            {
+                SortType.Ascending => leftItem.stack.CompareTo(rightItem.stack),
+                SortType.Descending => rightItem.stack.CompareTo(leftItem.stack),
+                _ => leftItem.stack.CompareTo(rightItem.stack)
+            };
         });
+
+        var player = Main.LocalPlayer;
         
         for (var i = 0; i < INVENTORY_LENGTH; i++)
         {
             var index = indices[i];
-            var item = Main.LocalPlayer.inventory[index];
+            var item = player.inventory[index];
 
             if (item.IsAir || item.type != Main.mouseItem.type)
             {

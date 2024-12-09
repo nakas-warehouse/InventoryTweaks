@@ -27,13 +27,11 @@ public sealed partial class ClientConfiguration : ModConfig
     [DefaultValue(true)]
     public bool EnableSelectedEffects { get; set; } = true;
 
-    [DrawTicks]
     [Increment(0.05f)]
     [Range(0.8f, 2f)]
     [DefaultValue(1.2f)]
     public float HoveredItemScale { get; set; } = 1.2f;
 
-    [DrawTicks]
     [Increment(0.05f)]
     [Range(0.4f, 1f)]
     [DefaultValue(0.8f)]

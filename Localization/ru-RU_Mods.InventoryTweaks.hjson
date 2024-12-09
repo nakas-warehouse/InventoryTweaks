@@ -23,6 +23,21 @@ Configs: {
 			Tooltip: Спрайт предмета будет немного увеличиваться, когда на него наведён курсор
 		}
 
+		EnableMouseEffects: {
+			// Label: Enable Mouse Effects
+			// Tooltip: Toggles visual effects applied to items selected in the cursor slot.
+		}
+
+		EnableSelectedEffects: {
+			// Label: Enable Selected Effects
+			// Tooltip: Toggles visual effects applied to items selected in the hotbar.
+		}
+
+		EnableDistribution: {
+			// Label: Enable Distribution
+			// Tooltip: Toggles automatic item distribution when managing inventory.
+		}
+
 		EnableMovementEffects: {
 			Label: Анимация перекладывания предметов
 			Tooltip: Определяет, будут ли предметы иметь более плавную анимацию перекладывания
@@ -64,27 +79,14 @@ Configs: {
 				'''
 		}
 
-		HoverType: {
-			// Label: Hover Type
+		SortType: {
+			// Label: Sort Type
 			/* Tooltip:
 				'''
-				Determines when an item's hover effects are active:
-				- None: No items have hover effects.
-				- Mouse: Only the mouse item has hover effects.
-				- Hover: Only hovered items have hover effects.
-				- Held: Only held items have hover effects.
-				- All: All items have hover effects.
+				Determine which item stacks are prioritized during stack refills:
+				- Ascending: Prioritize items with smaller stacks.
+				- Descending: Prioritize items with larger stacks.
 				''' */
-		}
-
-		EnableMouseEffects: {
-			// Label: Enable Mouse Effects
-			// Tooltip: ""
-		}
-
-		EnableSelectedEffects: {
-			// Label: Enable Selected Effects
-			// Tooltip: ""
 		}
 	}
 
@@ -93,15 +95,13 @@ Configs: {
 		Default.Label: по умолчанию
 		Half.Label: половина
 		Full.Label: полностью
+		// Single.Label: Single
 	}
 
-	HoverType: {
-		// Tooltip: Determines how item hover effects are applied.
-		// None.Label: None
-		// Mouse.Label: Mouse
-		// Hover.Label: Hover
-		// Held.Label: Held
-		// All.Label: All
+	SortType: {
+		// Tooltip: Determine how stacks are prioritized during refills.
+		// Ascending.Label: Ascending
+		// Descending.Label: Descending
 	}
 }
 

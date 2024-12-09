@@ -1,15 +1,27 @@
 {
   "profiles": {
-    "Terraria": {
+    "Terraria (Debug)": {
       "commandName": "Executable",
       "executablePath": "$(DotNetName)",
-      "commandLineArgs": "$(tMLPath)",
+      "commandLineArgs": "$(tMLPath) --debug",
       "workingDirectory": "$(tMLSteamPath)"
     },
-    "TerrariaServer": {
+    "Terraria (Release)": {
       "commandName": "Executable",
       "executablePath": "$(DotNetName)",
-      "commandLineArgs": "$(tMLServerPath)",
+      "commandLineArgs": "$(tMLPath) --release",
+      "workingDirectory": "$(tMLSteamPath)"
+    },
+    "Terraria Server (Debug)": {
+      "commandName": "Executable",
+      "executablePath": "$(DotNetName)",
+      "commandLineArgs": "$(tMLServerPath) --debug",
+      "workingDirectory": "$(tMLSteamPath)"
+    },
+    "Terraria Server (Release)": {
+      "commandName": "Executable",
+      "executablePath": "$(DotNetName)",
+      "commandLineArgs": "$(tMLServerPath) --release",
       "workingDirectory": "$(tMLSteamPath)"
     }
   }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using InventoryTweaks.Core.Configuration;
 using InventoryTweaks.Utilities;
 using MonoMod.Cil;
 using Terraria.Audio;
@@ -6,7 +7,6 @@ using Terraria.UI;
 
 namespace InventoryTweaks.Core.Input;
 
-// TODO: Cleanup this mess. v1.1.1 maybe?
 public sealed class ItemDistributionSystem : ILoadable
 {
     public static int LastInsertionSlot { get; private set; } = -1;
@@ -27,7 +27,9 @@ public sealed class ItemDistributionSystem : ILoadable
     {
         orig(self, gametime);
 
-        if (!Inserting)
+        var config = ClientConfiguration.Instance;
+
+        if (!config.EnableDistribution || !Inserting)
         {
             return;
         }
@@ -39,8 +41,10 @@ public sealed class ItemDistributionSystem : ILoadable
     private static void ItemSlot_RefreshStackSplitCooldown_Hook(On_ItemSlot.orig_RefreshStackSplitCooldown orig)
     {
         orig();
+        
+        var config = ClientConfiguration.Instance;
 
-        if (!Inserting)
+        if (!config.EnableDistribution || !Inserting)
         {
             return;
         }
@@ -53,14 +57,16 @@ public sealed class ItemDistributionSystem : ILoadable
     {
         orig(inv, context, slot);
         
-        var item = inv[slot];
+        var config = ClientConfiguration.Instance;
 
-        if (!ItemSlotUtils.IsInventoryContext(context) || ItemSlotUtils.IsNPCContext(context) || Main.mouseItem.IsAir)
+        if (!config.EnableDistribution || !ItemSlotUtils.IsInventoryContext(context) || ItemSlotUtils.IsNPCContext(context) || Main.mouseItem.IsAir)
         {
             return;
         }
         
-        if (Main.mouseRight && slot != LastInsertionSlot && Main.stackSplit < 30)
+        var item = inv[slot];
+
+        if (Main.mouseRight && (slot != LastInsertionSlot || Main.mouseRightRelease) && Main.stackSplit < 30)
         {
             Inserting = true;
             

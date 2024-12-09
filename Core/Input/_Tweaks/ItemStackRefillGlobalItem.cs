@@ -1,10 +1,12 @@
 ﻿using InventoryTweaks.Core.Configuration;
+using InventoryTweaks.Core.Enums;
 using Terraria.Audio;
 
 namespace InventoryTweaks.Core.Tweaks;
 
 public sealed class ItemStackRefillGlobalItem : GlobalItem
 {
+    // TODO: Take open chests into account for refills.
     public override void OnConsumeItem(Item item, Player player)
     {
         base.OnConsumeItem(item, player);
@@ -31,12 +33,17 @@ public sealed class ItemStackRefillGlobalItem : GlobalItem
             indices[i] = i;
         }
 
-        Array.Sort(indices, static (left, right) =>
+        Array.Sort(indices, (left, right) =>
         {
             var leftItem = Main.LocalPlayer.inventory[left];
             var rightItem = Main.LocalPlayer.inventory[right];
 
-            return rightItem.stack.CompareTo(leftItem.stack);
+            return config.SortType switch
+            {
+                SortType.Ascending => leftItem.stack.CompareTo(rightItem.stack),
+                SortType.Descending => rightItem.stack.CompareTo(leftItem.stack),
+                _ => leftItem.stack.CompareTo(rightItem.stack)
+            };
         });
 
         for (var i = 0; i < length; i++)
