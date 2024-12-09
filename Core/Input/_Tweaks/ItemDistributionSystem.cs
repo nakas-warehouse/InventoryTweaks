@@ -17,7 +17,7 @@ public sealed class ItemDistributionSystem : ILoadable
     {
         On_Main.DoDraw += Main_DoDraw_Hook;
         
-        On_ItemSlot.OverrideHover_ItemArray_int_int += ItemSlot_OverrideHover_Hook;
+        On_ItemSlot.RightClick_ItemArray_int_int += ItemSlot_RightClick_Hook;
         On_ItemSlot.RefreshStackSplitCooldown += ItemSlot_RefreshStackSplitCooldown_Hook;
     }
 
@@ -49,49 +49,39 @@ public sealed class ItemDistributionSystem : ILoadable
         Main.stackSplit = 30;
     }
 
-    // If it works, dont touch it.
-    private static void ItemSlot_OverrideHover_Hook(On_ItemSlot.orig_OverrideHover_ItemArray_int_int orig, Item[] inv, int context, int slot)
+    private static void ItemSlot_RightClick_Hook(On_ItemSlot.orig_RightClick_ItemArray_int_int orig, Item[] inv, int context, int slot)
     {
         orig(inv, context, slot);
+        
+        var item = inv[slot];
 
-        Inserting = false;
-
-        if (Main.mouseItem.IsAir)
+        if (!ItemSlotUtils.IsInventoryContext(context) || ItemSlotUtils.IsNPCContext(context) || Main.mouseItem.IsAir)
         {
             return;
         }
-
-        if (Main.mouseRight)
+        
+        if (Main.mouseRight && slot != LastInsertionSlot && Main.stackSplit < 30)
         {
-            var item = inv[slot];
-
-            if (Main.mouseRightRelease || slot != LastInsertionSlot)
+            Inserting = true;
+            
+            if (item.IsAir)
             {
-                Inserting = true;
-                
-                Main.stackCounter = 0;
-                Main.stackSplit = 30;
-                
-                Main.NewText(item.IsAir);
-
-                if (item.IsAir)
-                {
-                    item.SetDefaults(Main.mouseItem.type);
-                }
-                else
-                {
-                    item.stack++;
-                }
-
+                item.SetDefaults(Main.mouseItem.type);
+                    
                 Main.mouseItem.stack--;
-                
-
-                LastInsertionSlot = slot;
+            }
+            else if (item.type == Main.mouseItem.type)
+            {
+                item.stack++;
+                    
+                Main.mouseItem.stack--;
             }
         }
         else
         {
             Inserting = false;
         }
+        
+        LastInsertionSlot = slot;
     }
 }

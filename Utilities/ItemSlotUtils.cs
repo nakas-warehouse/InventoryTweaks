@@ -41,4 +41,10 @@ public static class ItemSlotUtils
                || context == ItemSlot.Context.EquipGrapple
                || context == ItemSlot.Context.EquipMinecart;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNPCContext(int context)
+    {
+        return context == ItemSlot.Context.ShopItem;
+    }
 }

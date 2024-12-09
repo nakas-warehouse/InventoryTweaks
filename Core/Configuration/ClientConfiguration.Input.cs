@@ -20,9 +20,12 @@ public sealed partial class ClientConfiguration : ModConfig
     [DefaultValue(true)]
     public bool EnableMouseRefill { get; set; } = true;
 
-    // [DefaultValue(true)]
-    // public bool EnableInsertion { get; set; } = true;
+    [DefaultValue(true)]
+    public bool EnableDistribution { get; set; } = true;
 
-    [DefaultValue(typeof(StackType), nameof(StackType.Default))]
-    public StackType StackType { get; set; } = StackType.Default;
+    [DefaultValue(typeof(StackType), nameof(StackType.Single))]
+    public StackType StackType { get; set; } = StackType.Single;
+
+    [DefaultValue(typeof(SortType), nameof(SortType.Ascending))]
+    public SortType SortType { get; set; } = SortType.Ascending;
 }

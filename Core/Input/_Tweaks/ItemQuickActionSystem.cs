@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using InventoryTweaks.Core.Configuration;
+using InventoryTweaks.Core.Input;
 using InventoryTweaks.Utilities;
 using MonoMod.Cil;
 using Terraria.UI;
@@ -35,7 +36,7 @@ public sealed partial class ItemQuickActionSystem : ILoadable
         
         var config = ClientConfiguration.Instance;
 
-        if (result && config.EnableQuickControl && ItemSlot.ControlInUse && ItemSlotUtils.IsInventoryContext(context))
+        if (result)
         {
             LastTrashSlot = slot;
         }
@@ -49,7 +50,7 @@ public sealed partial class ItemQuickActionSystem : ILoadable
         
         var config = ClientConfiguration.Instance;
         
-        if (!config.EnableQuickShift || !ItemSlotUtils.IsInventoryContext(context))
+        if (!config.EnableQuickShift)
         {
             return;
         }
@@ -78,33 +79,15 @@ public sealed partial class ItemQuickActionSystem : ILoadable
             
             c.EmitDelegate(static (Item[] inv, int context, int slot, ref bool value) =>
             {
-                var config = ClientConfiguration.Instance;
-                
-                var hasAction = Main.cursorOverride != -1;
-
-                value |= ItemSlotUtils.IsInventoryContext(context)
-                        && Main.mouseLeft
-                        && config.EnableQuickShift
-                        && ItemSlot.ShiftInUse
-                        && hasAction;
-
-                value |= ItemSlotUtils.IsInventoryContext(context)
-                        && Main.mouseLeft
-                        && config.EnableQuickControl
-                        && ItemSlot.ControlInUse
-                        && slot != LastTrashSlot
-                        && hasAction;
+                value |= CanQuickShift(context, slot);
+                value |= CanQuickControl(context, slot);
                 
                 if (!ModLoader.HasMod("MagicStorage"))
                 {
                     return;
                 }
-                
-                value |= ItemSlotUtils.IsInventoryContext(context)
-                        && Main.mouseLeft 
-                        && config.EnableQuickShift 
-                        && ItemSlot.ShiftInUse 
-                        && MagicStorageUtils.IsStorageOpen(inv, context, slot);
+
+                value |= CanQuickShiftMagicStorage(inv, context, slot);
             });
         }
         catch (Exception)
@@ -121,13 +104,14 @@ public sealed partial class ItemQuickActionSystem : ILoadable
 
             while (c.TryGotoNext(MoveType.After, static i => i.MatchLdsfld<Main>(nameof(Main.mouseRightRelease))))
             {
+                c.EmitLdarg1();
                 c.EmitLdarg2();
                 
                 c.EmitDelegate
                 (
-                    static (bool value, int slot) =>
+                    static (bool value, int context, int slot) =>
                     {
-                        return slot != LastEquipSlot || Main.mouseRightRelease;
+                        return !ItemDistributionSystem.Inserting && ItemSlotUtils.IsInventoryContext(context) && (slot != LastEquipSlot || Main.mouseRightRelease);
                     }
                 );
             }
@@ -137,23 +121,41 @@ public sealed partial class ItemQuickActionSystem : ILoadable
             MonoModHooks.DumpIL(InventoryTweaks.Instance, il);
         }
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool CanQuickShiftMagicStorage(Item[] inv, int context, int slot)
+    {
+        var config = ClientConfiguration.Instance;
+
+        return ItemSlotUtils.IsInventoryContext(context)
+               && Main.mouseLeft 
+               && config.EnableQuickShift 
+               && ItemSlot.ShiftInUse 
+               && MagicStorageUtils.IsStorageOpen(inv, context, slot);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool CanQuickShift(int context, int slot)
+    {
+        var config = ClientConfiguration.Instance;
+
+        return ItemSlotUtils.IsInventoryContext(context)
+               && Main.mouseLeft
+               && config.EnableQuickShift
+               && ItemSlot.ShiftInUse
+               && InputUtils.HasCursorOverride;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool CanShiftClick(Item[] inv, int context, int slot)
+    private static bool CanQuickControl(int context, int slot)
     {
-        var hasContext = Math.Abs(context) == 10 && ItemSlot.isEquipLocked(inv[slot].type);
-        
-        var hasShift = ItemSlot.ShiftInUse;
+        var config = ClientConfiguration.Instance;
 
-		var hasOverride = Main.cursorOverride == CursorOverrideID.InventoryToChest
-		                  || Main.cursorOverride == CursorOverrideID.ChestToInventory
-		                  || Main.cursorOverride == CursorOverrideID.BackInventory
-		                  || Main.cursorOverride == CursorOverrideID.FavoriteStar
-		                  || Main.cursorOverride == CursorOverrideID.Magnifiers;
-
-        var hasTileEntity = Main.LocalPlayer.tileEntityAnchor.IsInValidUseTileEntity() 
-                            && Main.LocalPlayer.tileEntityAnchor.GetTileEntity().OverrideItemSlotLeftClick(inv, context, slot);
-
-        return hasContext || hasShift || hasOverride || hasTileEntity;
+        return ItemSlotUtils.IsInventoryContext(context)
+               && Main.mouseLeft
+               && config.EnableQuickControl
+               && ItemSlot.ControlInUse
+               && slot != LastTrashSlot
+               && InputUtils.HasCursorOverride;
     }
 }

@@ -76,6 +76,16 @@ Configs: {
 				- All: All items have hover effects.
 				''' */
 		}
+
+		EnableMouseEffects: {
+			// Label: Enable Mouse Effects
+			// Tooltip: ""
+		}
+
+		EnableSelectedEffects: {
+			// Label: Enable Selected Effects
+			// Tooltip: ""
+		}
 	}
 
 	StackType: {

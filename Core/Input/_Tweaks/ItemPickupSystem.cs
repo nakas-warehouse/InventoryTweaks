@@ -1,5 +1,6 @@
 ﻿using InventoryTweaks.Core.Configuration;
 using InventoryTweaks.Core.Enums;
+using InventoryTweaks.Core.Input;
 using MonoMod.Cil;
 using Terraria.UI;
 
@@ -38,13 +39,13 @@ public sealed class ItemPickupSystem : ILoadable
 
                     var stack = config.StackType switch
                     {
-                        StackType.Default => value,
+                        StackType.Single => value,
                         StackType.Half => item.stack / 2,
                         StackType.Full => item.stack,
                         _ => value
                     };
                     
-                    return stack;
+                    return Math.Max(stack, 1);
                 }
             );
         }

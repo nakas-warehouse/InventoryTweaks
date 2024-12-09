@@ -21,6 +21,8 @@ public sealed class InventoryGraphicsGlobalItem : GlobalItem
     ///     Whether the item attached to this global was being hovered over or not.
     /// </summary>
     public bool OldHovering { get; internal set; }
+
+    public bool JustHovered => Hovering && !OldHovering;
     
     public override bool InstancePerEntity { get; } = true;
 }
