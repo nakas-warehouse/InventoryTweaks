@@ -9,12 +9,12 @@ Configs: {
 		}
 
 		HoveredItemScale: {
-			Label: Множитель размера на наведённых предметах
+			Label: Множ. размера на наведённых предметах
 			Tooltip: Определяет, насколько будет увеличиваться размер предметов, на которых наведён курсор
 		}
 
 		UnhoveredItemScale: {
-			Label: Множитель размера на ненаведённых предметах
+			Label: Множ. размера на ненаведённых предметах
 			Tooltip: Определяет, насколько будет уменьшаться размер предметов, на которых ненаведён курсор
 		}
 
@@ -24,18 +24,24 @@ Configs: {
 		}
 
 		EnableMouseEffects: {
-			// Label: Enable Mouse Effects
-			// Tooltip: Toggles visual effects applied to items selected in the cursor slot.
+			Label: Эффекты взятых курсором предметов
+			Tooltip: Определяет, будут ли взятые курсором предметы  немного изменённые вызуальные эффекты
 		}
 
 		EnableSelectedEffects: {
-			// Label: Enable Selected Effects
-			// Tooltip: Toggles visual effects applied to items selected in the hotbar.
+			Label: Эффекты меню быстрого доступа
+			Tooltip: Определяет, будут ли предметы в меню быстрого доступа увеличиваться при выборе
 		}
 
 		EnableDistribution: {
-			// Label: Enable Distribution
-			// Tooltip: Toggles automatic item distribution when managing inventory.
+			Label: Быстрые взаимодействия
+			Tooltip:
+				'''
+				Позволяет быстро взаимодействовать с предметами в инвентаре при зажатом ПКМ:
+				- складывающиеся в стопки предметы можно будет быстро раскладывать по единице, а не только собирать;
+				- разные предметы экиперовки можно будеть экиперовать подрят не отжимая ПКМ.
+				'''
+				
 		}
 
 		EnableMovementEffects: {
@@ -55,7 +61,7 @@ Configs: {
 
 		EnableStackRefill: {
 			Label: Автоматические пополнение стопок
-			Tooltip: Израсходованные предметы в ваших руках будут автоматически пополняться, если такой же тип предмета есть в вашем инвентаре
+			Tooltip: Израсходованные предметы взятые курсором будут автоматически пополняться, если такой же тип предмета есть в вашем инвентаре
 		}
 
 		EnableInventorySounds: {
@@ -64,8 +70,8 @@ Configs: {
 		}
 
 		EnableMouseRefill: {
-			Label: Пополнение стопок мышью
-			Tooltip: Позволяет быстро пополнять стопку предмета в слоте курсора по нажатию горячей клавиши, если такой же тип предмета есть в вашем инвентаре
+			Label: Пополнение стопок взятых предметов
+			Tooltip: Позволяет быстро пополнять стопку взятого курсором предмета по нажатию горячей клавиши, если такой же тип предмета есть в вашем инвентаре
 		}
 
 		StackType: {
@@ -73,35 +79,35 @@ Configs: {
 			Tooltip:
 				'''
 				Определяет, по какому принципу будут браться предметы из стопки при нажатии ПКМ:
-				- По умолчанию: будет браться один предмет из стопки;
-				- Половина: будет браться половина стопки;
-				- Полностью: будет браться вся стопка, аналогично нажатию ЛКМ.
+				- по одному: будет браться один предмет из стопки;
+				- половина: будет браться половина стопки;
+				- полностью: будет браться вся стопка, аналогично нажатию ЛКМ.
 				'''
 		}
 
 		SortType: {
-			// Label: Sort Type
-			/* Tooltip:
+			Label: Тип сортировки авт. стопок
+			Tooltip:
 				'''
-				Determine which item stacks are prioritized during stack refills:
-				- Ascending: Prioritize items with smaller stacks.
-				- Descending: Prioritize items with larger stacks.
-				''' */
+				Определяет, какая из стопок будет автоматиться браться курсором после израсходывания:
+				- макс. стопка: будет браться максимальная стопка предмета того же типа;
+				- мин. стопка: будет браться минимальная стопка предмета того же типа.
+				'''
 		}
 	}
 
 	StackType: {
-		Tooltip: Определяет принцип взятия предметов из стопок.
+		Tooltip: Определяет принцип взятия предметов из стопок
 		Default.Label: по умолчанию
 		Half.Label: половина
 		Full.Label: полностью
-		// Single.Label: Single
+		Single.Label: по одному
 	}
 
 	SortType: {
-		// Tooltip: Determine how stacks are prioritized during refills.
-		// Ascending.Label: Ascending
-		// Descending.Label: Descending
+		Tooltip: Определяет приоритет стопок при их пополнении
+		Ascending.Label: макс. стопка
+		Descending.Label: мин. стопка
 	}
 }
 
