@@ -1,10 +1,9 @@
 ﻿using InventoryTweaks.Core.Configuration;
 using InventoryTweaks.Core.Enums;
-using InventoryTweaks.Core.Input;
 using InventoryTweaks.Utilities;
 using Terraria.Audio;
 
-namespace InventoryTweaks.Core.Tweaks;
+namespace InventoryTweaks.Core.Input;
 
 public sealed class MouseItemRefillSystem : ModSystem
 {

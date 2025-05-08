@@ -2,7 +2,7 @@
 using InventoryTweaks.Core.Enums;
 using Terraria.Audio;
 
-namespace InventoryTweaks.Core.Tweaks;
+namespace InventoryTweaks.Core.Input;
 
 public sealed class ItemStackRefillGlobalItem : GlobalItem
 {

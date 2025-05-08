@@ -1,10 +1,9 @@
 ﻿using InventoryTweaks.Core.Configuration;
 using InventoryTweaks.Core.Enums;
-using InventoryTweaks.Core.Input;
 using MonoMod.Cil;
 using Terraria.UI;
 
-namespace InventoryTweaks.Core.Tweaks;
+namespace InventoryTweaks.Core.Input;
 
 public sealed class ItemPickupSystem : ILoadable
 {

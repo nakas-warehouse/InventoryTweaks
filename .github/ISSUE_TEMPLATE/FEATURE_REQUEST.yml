@@ -1,0 +1,57 @@
+name: "Feature Request ⭐"
+
+description: Request a feature.
+
+title: "feat: <title>"
+
+labels: ["feature"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for submitting a feature request.
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: Provide contact details if follow-up is needed.
+      placeholder: e.g. discord@username
+    validations:
+      required: false
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: Briefly describe the requested feature.
+      placeholder: e.g., Add a new crafting station for advanced recipes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: "Justification"
+      description: Explain why this feature would be beneficial.
+      placeholder: e.g., Improves crafting efficiency and fits the mod's theme.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives Considered"
+      description: List any alternative solutions you have thought of, if any.
+      placeholder: e.g., Modify an existing crafting station instead.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: "Additional Information"
+      description: Add any other context or images relevant to the request, if any.
+    validations:
+      required: false

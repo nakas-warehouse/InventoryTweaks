@@ -9,11 +9,10 @@ namespace InventoryTweaks.Utilities;
 public static class ItemSlotUtils
 {
     /// <summary>
-    ///     Checks whether an item slot context represents an inventory item or not.
+    ///     Checks whether an item slot context represents an inventory slot or not.
     /// </summary>
     /// <param name="context">The context to check.</param>
-    /// <returns><c>true</c> if the provided context represents an inventory item; otherwise, <c>false</c>.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    /// <returns><c>true</c> if the provided context represents an inventory slot; otherwise, <c>false</c>.</returns>
     public static bool IsInventoryContext(int context)
     {
         return context == ItemSlot.Context.InventoryItem
@@ -42,7 +41,11 @@ public static class ItemSlotUtils
                || context == ItemSlot.Context.EquipMinecart;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    /// <summary>
+    ///     Checks whether an item slot context represents an NPC slot or not.
+    /// </summary>
+    /// <param name="context">The context to check.</param>
+    /// <returns><c>true</c> if the provided context represents an NPC slot; otherwise, <c>false</c>.</returns>
     public static bool IsNPCContext(int context)
     {
         return context == ItemSlot.Context.ShopItem;

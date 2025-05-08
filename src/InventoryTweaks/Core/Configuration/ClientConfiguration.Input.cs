@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using InventoryTweaks.Core.Enums;
-using InventoryTweaks.Core.Tweaks;
 using Terraria.ModLoader.Config;
 
 namespace InventoryTweaks.Core.Configuration;

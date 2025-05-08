@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using InventoryTweaks.Core.Configuration;
-using InventoryTweaks.Core.Input;
 using InventoryTweaks.Utilities;
+using MagicStorage;
 using MonoMod.Cil;
 using Terraria.UI;
 
-namespace InventoryTweaks.Core.Tweaks;
+namespace InventoryTweaks.Core.Input;
 
-public sealed partial class ItemQuickActionSystem : ILoadable
+public sealed class ItemQuickActionSystem : ILoadable
 {
     /// <summary>
     ///     The index of the last item slot that the player used to trash an item.
@@ -131,7 +131,7 @@ public sealed partial class ItemQuickActionSystem : ILoadable
                && Main.mouseLeft 
                && config.EnableQuickShift 
                && ItemSlot.ShiftInUse 
-               && MagicStorageUtils.IsStorageOpen(inv, context, slot);
+               && IsStorageOpen(inv, context, slot);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -157,5 +157,26 @@ public sealed partial class ItemQuickActionSystem : ILoadable
                && ItemSlot.ControlInUse
                && slot != LastTrashSlot
                && InputUtils.HasCursorOverride;
+    }
+    
+    [JITWhenModsEnabled("MagicStorage")]
+    public static bool IsStorageOpen(Item[] inv, int context, int slot)
+    {
+        var player = Main.LocalPlayer;
+
+        if (!player.TryGetModPlayer(out StoragePlayer storagePlayer))
+        {
+            return false;
+        }
+
+        var hasContext = context == ItemSlot.Context.InventoryItem || context == ItemSlot.Context.InventoryCoin || context == ItemSlot.Context.InventoryAmmo;
+
+        var item = inv[slot];
+        var hasItem = !item.favorited && !item.IsAir;
+
+        var storage = storagePlayer.ViewingStorage();
+        var hasStorage = storage.X >= 0 && storage.Y >= 0;
+        
+        return hasContext && hasItem && hasStorage;
     }
 }
