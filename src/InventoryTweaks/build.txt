@@ -1,7 +1,7 @@
 displayName = Naka's Inventory Tweaks
 author = nakamurash
-version = 1.2
-homepage = https://discord.gg/cYdxYa6Nsk
+version = 1.3
+homepage = https://discord.gg/K472vMzWVg
 
 hideCode = false
 hideResources = false

@@ -4,7 +4,7 @@ using Terraria.UI;
 namespace InventoryTweaks.Utilities;
 
 /// <summary>
-///     Provides <see cref="ItemSlot" /> utilities.
+///     Provides <see cref="ItemSlot"/> utility methods.
 /// </summary>
 public static class ItemSlotUtils
 {

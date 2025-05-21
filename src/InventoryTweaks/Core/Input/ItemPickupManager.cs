@@ -1,11 +1,24 @@
-﻿using InventoryTweaks.Core.Configuration;
+﻿using InventoryTweaks.Common.Configuration;
 using InventoryTweaks.Core.Enums;
 using MonoMod.Cil;
 using Terraria.UI;
 
 namespace InventoryTweaks.Core.Input;
 
-public sealed class ItemPickupSystem : ILoadable
+/// <summary>
+///     Handles item pickup behavior when selecting items from an item slot.
+/// </summary>
+/// <remarks>
+///     <para>
+///         Modifies how items are picked up from an item slot through edits in
+///         <see cref="ItemSlot"/>, allowing the player to pick up different quantities from a stack.
+///     </para>
+///     <para>
+///         Configuration options are available in <see cref="ClientConfiguration" />, including
+///         the stacking strategy.
+///     </para>
+/// </remarks>
+public sealed class ItemPickupManager : ILoadable
 {
     void ILoadable.Load(Mod mod)
     {
@@ -13,7 +26,7 @@ public sealed class ItemPickupSystem : ILoadable
     }
 
     void ILoadable.Unload() { }
-    
+
     private static void ItemSlot_PickupItemIntoMouse_Edit(ILContext il)
     {
         try
@@ -43,7 +56,7 @@ public sealed class ItemPickupSystem : ILoadable
                         StackType.Full => item.stack,
                         _ => value
                     };
-                    
+
                     return Math.Max(stack, 1);
                 }
             );

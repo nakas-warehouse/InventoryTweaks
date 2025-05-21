@@ -1,26 +1,21 @@
 ﻿using System.ComponentModel;
-using InventoryTweaks.Core.Enums;
 using Newtonsoft.Json;
 using Terraria.ModLoader.Config;
 
-namespace InventoryTweaks.Core.Configuration;
+namespace InventoryTweaks.Common.Configuration;
 
-public sealed partial class ClientConfiguration : ModConfig
+public sealed partial class ClientConfiguration
 {
-    public static ClientConfiguration Instance => ModContent.GetInstance<ClientConfiguration>();
-
-    public override ConfigScope Mode { get; } = ConfigScope.ClientSide;
-
     [JsonIgnore]
     public bool EnableEffects => EnableHoverEffects || EnableMouseEffects || EnableSelectedEffects;
 
     [Header("Graphics")]
     [DefaultValue(true)]
     public bool EnableMovementEffects { get; set; } = true;
-    
+
     [DefaultValue(true)]
     public bool EnableHoverEffects { get; set; } = true;
-    
+
     [DefaultValue(true)]
     public bool EnableMouseEffects { get; set; } = true;
 

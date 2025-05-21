@@ -2,9 +2,9 @@
 using InventoryTweaks.Core.Enums;
 using Terraria.ModLoader.Config;
 
-namespace InventoryTweaks.Core.Configuration;
+namespace InventoryTweaks.Common.Configuration;
 
-public sealed partial class ClientConfiguration : ModConfig
+public sealed partial class ClientConfiguration
 {
     [Header("Input")]
     [DefaultValue(true)]

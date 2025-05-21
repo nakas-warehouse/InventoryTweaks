@@ -1,5 +1,8 @@
 ﻿namespace InventoryTweaks.Utilities;
 
+/// <summary>
+///     Provides input utility methods.
+/// </summary>
 public static class InputUtils
 {
     /// <summary>

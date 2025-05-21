@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
-namespace InventoryTweaks.Core.Configuration;
+namespace InventoryTweaks.Common.Configuration;
 
-public sealed partial class ClientConfiguration : ModConfig
+public sealed partial class ClientConfiguration
 {
     [Header("Audio")]
     [DefaultValue(true)]

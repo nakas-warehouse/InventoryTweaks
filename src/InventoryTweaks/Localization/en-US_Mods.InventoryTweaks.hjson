@@ -105,4 +105,4 @@ Configs: {
 	}
 }
 
-Keybinds.MouseRefillKeybind.DisplayName: Mouse Refill
+Keybinds.Keybind.DisplayName: Mouse Refill
