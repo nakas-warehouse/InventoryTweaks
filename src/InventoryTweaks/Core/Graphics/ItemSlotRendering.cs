@@ -1,48 +1,62 @@
-﻿using System.Collections.Generic;
-using InventoryTweaks.Common.Configuration;
+﻿using InventoryTweaks.Common.Configuration;
 using InventoryTweaks.Utilities;
+using JetBrains.Annotations;
 using Terraria.Audio;
 using Terraria.UI;
 
 namespace InventoryTweaks.Core.Graphics;
 
-public sealed class ItemSlotRendererSystem : ModSystem
+/// <summary>
+/// 
+/// </summary>
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class ItemSlotRendering : ILoadable
 {
     /// <summary>
-    ///     The name of the interface layer used to render item slots.
+    /// 
     /// </summary>
-    public const string LAYER_NAME = $"{nameof(InventoryTweaks)}";
+    [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+    private sealed class ItemSlotRenderingGlobalItem : GlobalItem
+    {
+        /// <summary>
+        ///     Gets or sets the inventory draw position of the item attached to this global.
+        /// </summary>
+        public Vector2? InventoryDrawPosition { get; internal set; }
+
+        /// <summary>
+        ///     Gets or sets the inventory draw scale of the item attached to this global.
+        /// </summary>
+        public float DrawScale { get; internal set; }
+
+        /// <summary>
+        ///     Gets or sets whether the item attached to this global is being hovered over.
+        /// </summary>
+        public bool Hovering { get; internal set; }
+
+        /// <summary>
+        ///     Gets or sets whether the item attached to this global was being hovered over.
+        /// </summary>
+        public bool OldHovering { get; internal set; }
+
+        /// <summary>
+        ///     Gets whether the item attached to this global has just been hovered.
+        /// </summary>
+        public bool JustHovered => Hovering && !OldHovering;
+
+        public override bool InstancePerEntity { get; } = true;
+    }
 
     /// <summary>
     ///     Gets the <see cref="ClientConfiguration" /> instance.
     /// </summary>
     private static ClientConfiguration Config => ClientConfiguration.Instance;
 
-    public override void Load()
+    void ILoadable.Load(Mod mod)
     {
-        base.Load();
-
         On_ItemSlot.DrawItemIcon += ItemSlot_DrawItemIcon_Hook;
     }
-
-    public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-    {
-        base.ModifyInterfaceLayers(layers);
-
-        var index = layers.FindIndex(static layer => layer.Name == "Vanilla: Inventory");
-
-        if (index == -1)
-        {
-            return;
-        }
-
-        layers.Insert(index + 1, new LegacyGameInterfaceLayer(LAYER_NAME, DrawIcons));
-    }
-
-    private static bool DrawIcons()
-    {
-        return true;
-    }
+    
+    void ILoadable.Unload() { }
 
     private static float ItemSlot_DrawItemIcon_Hook
     (
@@ -70,7 +84,7 @@ public sealed class ItemSlotRendererSystem : ModSystem
 
     private static void UpdateMovementEffects(Item item, ref Vector2 position)
     {
-        if (!Config.EnableMovementEffects || !item.TryGetGlobalItem(out ItemSlotDataGlobalItem graphics))
+        if (!Config.EnableMovementEffects || !item.TryGetGlobalItem(out ItemSlotRenderingGlobalItem graphics))
         {
             return;
         }
@@ -87,7 +101,7 @@ public sealed class ItemSlotRendererSystem : ModSystem
 
     private static void UpdateScaleEffects(Item item, ref float scale)
     {
-        if (!Config.EnableEffects || !item.TryGetGlobalItem(out ItemSlotDataGlobalItem graphics))
+        if (!Config.EnableEffects || !item.TryGetGlobalItem(out ItemSlotRenderingGlobalItem graphics))
         {
             return;
         }
@@ -101,7 +115,7 @@ public sealed class ItemSlotRendererSystem : ModSystem
 
     private static void UpdateHoverEffects(Item item, in Vector2 position)
     {
-        if (!Config.EnableHoverEffects || !item.TryGetGlobalItem(out ItemSlotDataGlobalItem graphics))
+        if (!Config.EnableHoverEffects || !item.TryGetGlobalItem(out ItemSlotRenderingGlobalItem graphics))
         {
             return;
         }

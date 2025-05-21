@@ -1,10 +1,15 @@
 ﻿using System.Reflection;
+using JetBrains.Annotations;
 using MagicStorage;
 using MagicStorage.UI.States;
 
 namespace InventoryTweaks.Common.Compatibility;
 
+/// <summary>
+/// 
+/// </summary>
 [JITWhenModsEnabled("MagicStorage")]
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class MagicStorageHooks : ILoadable
 {
     private delegate Item GetRecipeCallback(CraftingUIState.RecipesPage self, int slot, ref int context);
@@ -24,11 +29,13 @@ public sealed class MagicStorageHooks : ILoadable
 
     void ILoadable.Unload() { }
 
+    // Makes the item a clone instead of a reference to prevent the same instance being modified with different parameters at once.
     private static Item CraftingGUI_GetHeader_Hook(GetHeaderCallback orig, int slot, ref int context)
     {
         return orig(slot, ref context).Clone();
     }
 
+    // Makes the item a clone instead of a reference to prevent the same instance being modified with different parameters at once.
     private static Item CraftingUIState_GetRecipe_Hook(GetRecipeCallback orig, CraftingUIState.RecipesPage self, int slot, ref int context)
     {
         return orig(self, slot, ref context).Clone();

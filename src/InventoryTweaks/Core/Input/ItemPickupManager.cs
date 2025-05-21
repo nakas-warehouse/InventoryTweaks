@@ -1,5 +1,6 @@
 ﻿using InventoryTweaks.Common.Configuration;
 using InventoryTweaks.Core.Enums;
+using JetBrains.Annotations;
 using MonoMod.Cil;
 using Terraria.UI;
 
@@ -18,6 +19,7 @@ namespace InventoryTweaks.Core.Input;
 ///         the stacking strategy.
 ///     </para>
 /// </remarks>
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class ItemPickupManager : ILoadable
 {
     void ILoadable.Load(Mod mod)
