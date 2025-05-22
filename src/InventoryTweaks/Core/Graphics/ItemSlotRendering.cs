@@ -7,16 +7,30 @@ using Terraria.UI;
 namespace InventoryTweaks.Core.Graphics;
 
 /// <summary>
-/// 
+///     Handles modifying how item icons are rendered in item slots.
 /// </summary>
+/// <remarks>
+///     <para>
+///         Implements custom rendering effects for items rendered in item slots, including hover
+///         scaling, position smoothing, and sound feedback through hooks in <see cref="ItemSlot" />.
+///     </para>
+///     <para>
+///         Effects are applied through hooks in <see cref="ItemSlot.DrawItemIcon" />.
+///     </para>
+///     <para>
+///         Configuration options are available in <see cref="ClientConfiguration" />, including
+///         movement smoothing, hover effects and inventory feedback sounds.
+///     </para>
+/// </remarks>
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class ItemSlotRendering : ILoadable
 {
     /// <summary>
-    /// 
+    ///     Contains visual metadata used and updated during inventory slot rendering for each
+    ///     <see cref="Item" /> instance.
     /// </summary>
     [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-    private sealed class ItemSlotRenderingGlobalItem : GlobalItem
+    public sealed class ItemSlotRenderingGlobalItem : GlobalItem
     {
         /// <summary>
         ///     Gets or sets the inventory draw position of the item attached to this global.
@@ -55,7 +69,7 @@ public sealed class ItemSlotRendering : ILoadable
     {
         On_ItemSlot.DrawItemIcon += ItemSlot_DrawItemIcon_Hook;
     }
-    
+
     void ILoadable.Unload() { }
 
     private static float ItemSlot_DrawItemIcon_Hook

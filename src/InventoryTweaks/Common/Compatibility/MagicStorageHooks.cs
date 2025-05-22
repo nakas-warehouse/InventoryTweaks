@@ -6,8 +6,16 @@ using MagicStorage.UI.States;
 namespace InventoryTweaks.Common.Compatibility;
 
 /// <summary>
-/// 
+///     Handles compatibility patches to the Magic Storage mod.
 /// </summary>
+/// <remarks>
+///     <para>
+///         Hooks into <c>MagicStorage.CraftingGUI.GetHeader</c> and
+///         <c>MagicStorage.UI.States.CraftingUIState.RecipesPage.GetRecipe</c> to return
+///         cloned item instances instead of direct references. This prevents shared state between
+///         different UI components modifying the same item instance simultaneously.
+///     </para>
+/// </remarks>
 [JITWhenModsEnabled("MagicStorage")]
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
 public sealed class MagicStorageHooks : ILoadable

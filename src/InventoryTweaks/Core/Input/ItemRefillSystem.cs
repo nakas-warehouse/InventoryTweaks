@@ -31,11 +31,17 @@ public sealed class ItemRefillSystem : ModSystem
     ///     Handles automatic refilling of item stacks when consumed.
     /// </summary>
     /// <remarks>
-    ///     When the player's held item stack is fully consumed, it is automatically refilled through
-    ///     behavior implemented in <see cref="OnConsumeItem"/>.
+    ///     <para>
+    ///         When the player's held item stack is fully consumed, it is automatically refilled through
+    ///         behavior implemented in <see cref="OnConsumeItem" />.
+    ///     </para>
+    ///     <para>
+    ///         Configuration options are available in <see cref="ClientConfiguration" />, including the
+    ///         sorting strategy and inventory feedback sounds.
+    ///     </para>
     /// </remarks>
     [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
-    private sealed class ItemRefillGlobalItem : GlobalItem
+    public sealed class ItemRefillGlobalItem : GlobalItem
     {
         public override void OnConsumeItem(Item item, Player player)
         {
@@ -53,56 +59,20 @@ public sealed class ItemRefillSystem : ModSystem
                 return;
             }
 
-            var length = player.inventory.Length;
-            var indices = new int[length];
+            var hasContainer = player.TryGetContainer(out var inventory);
 
-            for (var i = 0; i < length; i++)
-            {
-                indices[i] = i;
-            }
+            var refillInventory = hasContainer ? inventory : player.inventory;
+            var refillLength = hasContainer ? inventory.Length : PLAYER_INVENTORY_LENGTH;
 
-            Array.Sort
-            (
-                indices,
-                static (left, right) =>
-                {
-                    var leftItem = Main.LocalPlayer.inventory[left];
-                    var rightItem = Main.LocalPlayer.inventory[right];
-
-                    return Config.SortType switch
-                    {
-                        SortType.Ascending => leftItem.stack.CompareTo(rightItem.stack),
-                        SortType.Descending => rightItem.stack.CompareTo(leftItem.stack),
-                        _ => leftItem.stack.CompareTo(rightItem.stack)
-                    };
-                }
-            );
-
-            for (var i = 0; i < length; i++)
-            {
-                var index = indices[i];
-                var inventory = player.inventory[index];
-
-                if (inventory.IsAir || inventory == player.HeldItem || inventory.type != player.HeldItem.type)
-                {
-                    continue;
-                }
-
-                if (Config.EnableInventorySounds)
-                {
-                    SoundEngine.PlaySound(in SoundID.MenuTick);
-                }
-
-                var value = Math.Min(inventory.stack, player.HeldItem.maxStack);
-
-                inventory.stack -= value;
-
-                player.HeldItem.stack += value;
-
-                break;
-            }
+            RefillItemFromInventory(player.HeldItem, refillInventory, refillLength);
         }
     }
+
+    /// <summary>
+    ///     The length of the player's inventory. Excludes the 58th index, which is reserved for
+    ///     <see cref="Main.mouseItem" />.
+    /// </summary>
+    public const int PLAYER_INVENTORY_LENGTH = 57;
 
     /// <summary>
     ///     Gets or sets the keybind for mouse item refill.
@@ -132,7 +102,7 @@ public sealed class ItemRefillSystem : ModSystem
     {
         base.PostUpdateInput();
 
-        if (!Keybind.JustPressed)
+        if (!Keybind.JustPressed || !Config.EnableMouseRefill)
         {
             return;
         }
@@ -140,16 +110,26 @@ public sealed class ItemRefillSystem : ModSystem
         RefillMouseItem();
     }
 
-    private static void RefillMouseItem()
+    public static void RefillMouseItem()
     {
-        if (!Config.EnableMouseRefill || Main.mouseItem.IsAir || Main.mouseItem.IsFull())
+        if (Main.mouseItem.IsAir || Main.mouseItem.IsFull())
         {
             return;
         }
 
         var player = Main.LocalPlayer;
 
-        var length = player.inventory.Length;
+        var hasContainer = player.TryGetContainer(out var inventory);
+
+        var refillInventory = hasContainer ? inventory : player.inventory;
+        var refillLength = hasContainer ? inventory.Length : PLAYER_INVENTORY_LENGTH;
+
+        RefillItemFromInventory(Main.mouseItem, refillInventory, refillLength);
+    }
+
+    // TODO: Make this a utility method at "ItemUtils.cs".
+    private static void RefillItemFromInventory(Item item, Item[] inventory, int length)
+    {
         var indices = new int[length];
 
         for (var i = 0; i < length; i++)
@@ -160,27 +140,27 @@ public sealed class ItemRefillSystem : ModSystem
         Array.Sort
         (
             indices,
-            static (left, right) =>
+            static (a, b) =>
             {
-                var leftItem = Main.LocalPlayer.inventory[left];
-                var rightItem = Main.LocalPlayer.inventory[right];
+                var left = Main.LocalPlayer.inventory[a];
+                var right = Main.LocalPlayer.inventory[b];
 
                 return Config.SortType switch
                 {
-                    SortType.Ascending => leftItem.stack.CompareTo(rightItem.stack),
-                    SortType.Descending => rightItem.stack.CompareTo(leftItem.stack),
-                    _ => leftItem.stack.CompareTo(rightItem.stack)
+                    SortType.Ascending => left.stack.CompareTo(right.stack),
+                    SortType.Descending => right.stack.CompareTo(left.stack),
+                    _ => left.stack.CompareTo(right.stack)
                 };
             }
         );
 
+        var type = item.type;
 
-        for (var i = 0; i < length; i++)
+        foreach (var index in indices)
         {
-            var index = indices[i];
-            var item = player.inventory[index];
+            var other = inventory[index];
 
-            if (item.IsAir || item.type != Main.mouseItem.type)
+            if (other == item || other.IsAir || other.type != type)
             {
                 continue;
             }
@@ -190,12 +170,12 @@ public sealed class ItemRefillSystem : ModSystem
                 SoundEngine.PlaySound(in SoundID.MenuTick);
             }
 
-            var stack = Main.mouseItem.maxStack - Main.mouseItem.stack;
-            var value = Math.Min(item.stack, stack);
+            var stack = item.maxStack - item.stack;
+            var transfer = Math.Min(other.stack, stack);
 
-            item.stack -= value;
+            other.stack -= transfer;
 
-            Main.mouseItem.stack += value;
+            item.stack += transfer;
         }
     }
 }
