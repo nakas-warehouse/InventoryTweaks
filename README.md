@@ -1,4 +1,4 @@
-<img src="https://github.com/nakas-warehouse/.github/blob/main/profile/banner.png" align="center"/>
+<img src="https://github.com/nakas-warehouse/.github/blob/main/img/banner.png" align="center"/>
 
 # Inventory Tweaks
 
